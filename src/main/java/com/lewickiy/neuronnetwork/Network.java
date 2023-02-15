@@ -94,6 +94,7 @@ public class Network<T>{
      */
     private void updateWeights() {
         for (Layer layer : layers.subList(1, layers.size())) {
+            System.out.println("For layer: " + layer.toString());
             for (Neuron neuron : layer.neurons) {
                 for (int i = 0; i < neuron.weights.length; i++) {
                     neuron.weights[i] = neuron.weights[i] + (
@@ -101,6 +102,7 @@ public class Network<T>{
                                             * layer.previousLayer.get().outputCache[i]
                                             * neuron.delta
                     );
+                    System.out.println((neuron.weights[i] + " neuron weight"));
                 }
             }
         }

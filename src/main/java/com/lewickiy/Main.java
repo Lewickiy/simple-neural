@@ -38,11 +38,6 @@ public class Main {
             Wine wineNext = new Wine();
             Network<Integer>.Results resultsNext = wineNext.classify();
             sum = sum + resultsNext.percentage;
-            if (resultsNext.percentage < 0.78) {
-                System.out.println(
-                        (resultsNext.percentage * 100) + "% на " + iteration + " прохрде");
-            }
-
             iteration++;
         }
         System.out.println(
