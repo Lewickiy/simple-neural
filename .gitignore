@@ -1,0 +1,5 @@
+# Project exclude paths
+/target/
+/src/main/resources/
+/src/test/
+/pom.xml
