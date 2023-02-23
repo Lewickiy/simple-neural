@@ -6,6 +6,9 @@ import java.util.Optional;
 import java.util.function.DoubleUnaryOperator;
 import java.util.function.Function;
 
+import static com.lewickiy.util.Weight.createLearningWeightsCSV;
+import static com.lewickiy.util.Weight.isLearningWeightsExist;
+
 /**
  * Сама сеть хранит только один элемент состояния - слои, которыми она управляет.
  * Данный класс отвечает за инициализацию составляющих его слоёв.
@@ -30,7 +33,13 @@ public class Network<T>{
                    DoubleUnaryOperator activationFunction,
                    DoubleUnaryOperator derivativeActivationFunction
     ) {
-        if(layerStructure.length > 3) {
+
+        if (isLearningWeightsExist()) { //Проверка наличия csv с весами (он может быть и пустой. Это не имеен значения)
+            createLearningWeightsCSV();
+        }
+        System.out.println("Network created");
+
+        if (layerStructure.length > 3) {
             throw new IllegalArgumentException("Error: Should be at least 3 layers (1 input, 1 hidden, 1 output)");
         }
         Layer inputLayer = new Layer(
@@ -51,6 +60,7 @@ public class Network<T>{
             );
             layers.add(nextLayer);
         }
+        //TODO save loaded to array weights to CSV
     }
 
     /**
@@ -94,15 +104,14 @@ public class Network<T>{
      */
     private void updateWeights() {
         for (Layer layer : layers.subList(1, layers.size())) {
-            System.out.println("For layer: " + layer.toString());
             for (Neuron neuron : layer.neurons) {
+//                System.out.print(neuron.getNeuronAddress() + " neuron address for UPDATE wright | ");
                 for (int i = 0; i < neuron.weights.length; i++) {
                     neuron.weights[i] = neuron.weights[i] + (
-                                    neuron.learningRate
-                                            * layer.previousLayer.get().outputCache[i]
-                                            * neuron.delta
+                            neuron.learningRate
+                                    * layer.previousLayer.get().outputCache[i]
+                                    * neuron.delta
                     );
-                    System.out.println((neuron.weights[i] + " neuron weight"));
                 }
             }
         }
@@ -145,6 +154,7 @@ public class Network<T>{
             this.percentage = percentage;
         }
     }
+
     public Results validate(List<double[]> inputs, List<T> expecteds, Function<double[], T> interpret) {
         int correct = 0;
         for (int i = 0; i < inputs.size(); i++) {

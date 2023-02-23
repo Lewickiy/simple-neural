@@ -7,7 +7,6 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-
 /* IRIS
         int iteration = 1;
         double sum = 0.0;
@@ -28,7 +27,8 @@ public class Main {
         );*/
 
         //WINE
-        int iteration = 1;
+
+/*        int iteration = 1;
         double sum = 0.0;
         Wine wine = new Wine();
         Network<Integer>.Results results = wine.classify();
@@ -43,6 +43,10 @@ public class Main {
         System.out.println(
                 (sum * 100) / iteration + " средний балл на "
                         + iteration + " итераций"
-        );
+        );*/
+
+        Wine wine1 = new Wine();
+        Network<Integer>.Results results1 = wine1.classify();
+        System.out.println(results1.percentage);
     }
 }

@@ -1,7 +1,12 @@
 package com.lewickiy.neuronnetwork;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.function.DoubleUnaryOperator;
 
+import static com.lewickiy.util.Counter.countLayer;
+import static com.lewickiy.util.Counter.countNeuron;
 import static com.lewickiy.util.DotProduct.dotProduct;
 
 /**
@@ -14,7 +19,10 @@ import static com.lewickiy.util.DotProduct.dotProduct;
  * В обучающем материале сказано что некоторые из этих объектов
  * лучше хранить в слое, но для наглядности они отнесены к нейрону.
  */
+@Getter
+@Setter
 public class Neuron {
+    public String neuronAddress;
     public double[] weights;
     public double delta;
     public final double learningRate;
@@ -58,6 +66,10 @@ public class Neuron {
             , DoubleUnaryOperator activationFunction
             , DoubleUnaryOperator derivativeActivationFunction
     ) {
+        neuronAddress = countNeuron + "-" + (countLayer - 1);
+        countNeuron++; //TODO count neuron
+        System.out.println(neuronAddress + " neuron created!");
+
         this.weights = weights;
         this.delta = 0.0;
         this.learningRate = learningRate;

@@ -1,11 +1,16 @@
 package com.lewickiy.neuronnetwork;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 import java.util.function.DoubleUnaryOperator;
 
+import static com.lewickiy.util.Counter.countLayer;
+import static com.lewickiy.util.Counter.countNeuron;
 import static com.lewickiy.util.DotProduct.dotProduct;
 
 /**
@@ -21,6 +26,8 @@ import static com.lewickiy.util.DotProduct.dotProduct;
  * В нашей простой сети у всех нейронов слоя фунуция активации и скорость обучения одинаковы что видно из кода.
  */
 public class Layer {
+    double[] learnedWeights;
+    int layerAddress;
     public Optional<Layer> previousLayer;
     public List<Neuron> neurons = new ArrayList<>();
     public double[] outputCache;
@@ -30,28 +37,44 @@ public class Layer {
                  double learningRate,
                  DoubleUnaryOperator activationFunction,
                  DoubleUnaryOperator derivativeActivationFunction
+
     ) {
+        layerAddress = countLayer++;
+        countNeuron = 1;
+        System.out.println(layerAddress + " layer created");
         this.previousLayer = previousLayer;
-        Random random = new Random();
-        for (int i = 0; i < numNeurons; i++) {
-            double[] randomWeights = null;
-            if (previousLayer.isPresent()) {
-                randomWeights = random.doubles(previousLayer.get().neurons.size()).toArray();
-            }
-            Neuron neuron = new Neuron(randomWeights, learningRate, activationFunction, derivativeActivationFunction);
-            neurons.add(neuron);
-        }
+
+                Random random = new Random();
+
+                for (int i = 0; i < numNeurons; i++) {
+                    double[] randomWeights = null;
+                    if (previousLayer.isPresent()) {
+                        //TODO build string with random weights of neuron for load to csv file
+                        randomWeights = random.doubles(previousLayer.get().neurons.size()).toArray();
+
+
+
+                    }
+                    Neuron neuron = new Neuron(randomWeights,
+                            learningRate,
+                            activationFunction,
+                            derivativeActivationFunction
+                    );
+                    neurons.add(neuron);
+                }
+
         outputCache = new double[numNeurons];
     }
 
     /**
      * По мере того как сишналы передаются через сеть, их должен обрабатывать каждый нейрон Layer (слоя),
      * именно это делает метод. (Каждый нейрон слоя, получает сигналы от каждого нейрона предыдущего слоя)
+     *
      * @param inputs - данные полученные от прошлого слоя
      * @return outputCache - выходные данные, являющиеся inputs для следующего слоя
      */
     public double[] outputs(double[] inputs) {
-        if(previousLayer.isPresent()) {
+        if (previousLayer.isPresent()) {
             outputCache = neurons.stream().mapToDouble(n -> n.output(inputs)).toArray();
         } else {
             outputCache = inputs;
@@ -63,6 +86,7 @@ public class Layer {
      * Существует два типа дельт для вычисления в обратном распространении:
      * данный тип для выходного слоя (188,7.4).
      * Впоследствии этот метод будет вызываться сетью во время обратного распространения.
+     *
      * @param expected ...
      */
     public void calculateDeltasForOutputLayer(double[] expected) {
@@ -75,6 +99,7 @@ public class Layer {
 
     /**
      * данный тип для скрытого слоя (188,7.5).
+     *
      * @param nextLayer - в качестве параметра принимается объект "Следующий слой".
      */
     public void calculateDeltasForHiddenLayer(Layer nextLayer) {

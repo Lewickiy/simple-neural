@@ -62,7 +62,7 @@ public class Wine {
 
         List<double[]> wineTrainers = wineParameters.subList(0, 150);
         List<double[]> wineTrainersCorrects = wineCategories.subList(0, 150);
-        int trainingIterations = 13;
+        int trainingIterations = 100;
         for (int i = 0; i < trainingIterations; i++) {
             wineNetwork.train(wineTrainers, wineTrainersCorrects);
         }
