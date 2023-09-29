@@ -20,7 +20,5 @@ public class LoadCSV {
         return strings;
     }
 
-    public static double max(double[] numbers) {
-        return Arrays.stream(numbers).max().orElse(Double.MAX_VALUE);
-    }
+
 }
