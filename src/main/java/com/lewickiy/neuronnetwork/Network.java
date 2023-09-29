@@ -12,7 +12,7 @@ import static com.lewickiy.util.Weight.isLearningWeightsExist;
 /**
  * Сама сеть хранит только один элемент состояния - слои, которыми она управляет.
  * Данный класс отвечает за инициализацию составляющих его слоёв.
- * Общий тип T связывает сеть с типом окончательных категорий классифиувции из набора данных.
+ * Общий тип T связывает сеть с типом окончательных категорий классификации из набора данных.
  * Он используется только в последнем методе класса validate()
  */
 public class Network<T>{
@@ -23,7 +23,7 @@ public class Network<T>{
      * одну и ту же функцию активации для своих нейронов и имеют одинаковую скорость обучения.
      * @param layerStructure список элементов типа int (Например {2, 4, 3} описывает сеть,
      *                       имеющую два нейрона во входном слое, четыре нейрона в скрытом,
-     *                       и три нейрона на выходном.
+     *                       и три нейрона на выходном).
      * @param learningRate скорость обучения.
      * @param activationFunction -функция активации
      * @param derivativeActivationFunction ...
@@ -34,7 +34,7 @@ public class Network<T>{
                    DoubleUnaryOperator derivativeActivationFunction
     ) {
 
-        if (isLearningWeightsExist()) { //Проверка наличия csv с весами (он может быть и пустой. Это не имеен значения)
+        if (isLearningWeightsExist()) { //Проверка наличия csv с весами (он может быть и пустой. Это не имеет значения)
             createLearningWeightsCSV();
         }
         System.out.println("Network created");
@@ -78,7 +78,7 @@ public class Network<T>{
     }
 
     /**
-     * Двнный метод отвечает за вычисление дельт для каждого нейрона в сети.
+     * Данный метод отвечает за вычисление дельт для каждого нейрона в сети.
      * В этом методе последовательно задействуются методы
      * calculateDeltasForOutputLayer() и calculateDeltasForHiddenLayer().
      * Не стоит забывать что при обратном распространении дельты вычисляются в обратном порядке.
@@ -99,7 +99,7 @@ public class Network<T>{
     }
 
     /**
-     * Так как метод backPropagate() отвечпет только за изменение всех дельт, но не изменяет веса элементов сети,
+     * Так как метод backPropagate() отвечает только за изменение всех дельт, но не изменяет веса элементов сети,
      * после неё вызывается данный метод, поскольку изменение веса зависит от дельт.
      */
     private void updateWeights() {
@@ -128,15 +128,15 @@ public class Network<T>{
      * TODO Тогда можно будет отследить как постепенно уменьшается количество ошибок сети по
      * TODO мере продвижения вниз по склону в процессе градиентного спуска.
      * @param inputs - принимаемые входные данные
-     * @param expecteds - принимаемые ожидаемые результаты.
+     * @param expected - принимаемые ожидаемые результаты.
      */
-    public void train(List<double[]> inputs, List<double[]> expecteds) {
+    public void train(List<double[]> inputs, List<double[]> expected) {
         //метод использует результаты выполнения функции outputs()
         //для нескольких входных данных, сравнивает их с окончательным результатом
         //и передаёт полученное функциям backPropagate() и updateWeights()
         for (int i = 0; i < inputs.size(); i++) {
             double[] xs = inputs.get(i);
-            double[] ys = expecteds.get(i);
+            double[] ys = expected.get(i);
             outputs(xs);
             backPropagate(ys);
             updateWeights();
@@ -155,11 +155,11 @@ public class Network<T>{
         }
     }
 
-    public Results validate(List<double[]> inputs, List<T> expecteds, Function<double[], T> interpret) {
+    public Results validate(List<double[]> inputs, List<T> expectedList, Function<double[], T> interpret) {
         int correct = 0;
         for (int i = 0; i < inputs.size(); i++) {
             double[] input = inputs.get(i);
-            T expected = expecteds.get(i);
+            T expected = expectedList.get(i);
             T result = interpret.apply(outputs(input));
 
             if (result.equals(expected)) {

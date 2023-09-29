@@ -6,7 +6,6 @@ import java.util.List;
 
 public class Normalize {
     public static void normalizeByFeatureScaling(List<double[]> dataset) {
-
         for (int colNum = 0; colNum < dataset.get(0).length; colNum++) {
             List<Double> column = new ArrayList<>();
 

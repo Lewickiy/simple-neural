@@ -1,8 +1,5 @@
 package com.lewickiy.neuronnetwork;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,14 +16,13 @@ import static com.lewickiy.util.DotProduct.dotProduct;
  * - предшествующий слой (previousLayer);
  * - и выходной кэш (outputCache).
  * Выходной кэш похож на кэш нейрона, но на один слой выше. Он кэширует выходные данные каждого нейрона
- * в данном слое после применения фунуции активации.
- * В момент создания слоя основновной задачей является инициализация его нейронов.
- * Аоэтому конструктору класса необходимо знать, сколько нейронов требуется инициализировать,
- * какими должны быть их фунуции активации и какова скорость обучения.
- * В нашей простой сети у всех нейронов слоя фунуция активации и скорость обучения одинаковы что видно из кода.
+ * в данном слое после применения функции активации.
+ * В момент создания слоя основной задачей является инициализация его нейронов.
+ * Поэтому конструктору класса необходимо знать, сколько нейронов требуется инициализировать,
+ * какими должны быть их функции активации и какова скорость обучения.
+ * В нашей простой сети у всех нейронов слоя функция активации и скорость обучения одинаковы, что видно из кода.
  */
 public class Layer {
-    double[] learnedWeights;
     int layerAddress;
     public Optional<Layer> previousLayer;
     public List<Neuron> neurons = new ArrayList<>();
@@ -50,7 +46,9 @@ public class Layer {
                     double[] randomWeights = null;
                     if (previousLayer.isPresent()) {
                         //TODO build string with random weights of neuron for load to csv file
-                        randomWeights = random.doubles(previousLayer.get().neurons.size()).toArray();
+                        randomWeights = random
+                                .doubles(previousLayer.get().neurons.size())
+                                .toArray();
 
 
 
@@ -67,7 +65,7 @@ public class Layer {
     }
 
     /**
-     * По мере того как сишналы передаются через сеть, их должен обрабатывать каждый нейрон Layer (слоя),
+     * По мере того как сигналы передаются через сеть, их должен обрабатывать каждый нейрон Layer (слоя),
      * именно это делает метод. (Каждый нейрон слоя, получает сигналы от каждого нейрона предыдущего слоя)
      *
      * @param inputs - данные полученные от прошлого слоя
@@ -98,8 +96,7 @@ public class Layer {
     }
 
     /**
-     * данный тип для скрытого слоя (188,7.5).
-     *
+     * Данный тип для скрытого слоя (188,7.5).
      * @param nextLayer - в качестве параметра принимается объект "Следующий слой".
      */
     public void calculateDeltasForHiddenLayer(Layer nextLayer) {

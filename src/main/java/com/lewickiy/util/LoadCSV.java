@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
-
 public class LoadCSV {
     public static List<String[]> loadCSV(String filename) throws IOException {
         List<String[]> strings = new ArrayList<>();

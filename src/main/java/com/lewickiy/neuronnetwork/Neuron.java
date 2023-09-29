@@ -1,8 +1,4 @@
 package com.lewickiy.neuronnetwork;
-
-import lombok.Getter;
-import lombok.Setter;
-
 import java.util.function.DoubleUnaryOperator;
 
 import static com.lewickiy.util.Counter.countLayer;
@@ -16,11 +12,9 @@ import static com.lewickiy.util.DotProduct.dotProduct;
  *  - скорость обучения;
  *  - кэш последних выходных данных;
  *  - функцию активации и её производную.
- * В обучающем материале сказано что некоторые из этих объектов
+ * В обучающем материале сказано, что некоторые из этих объектов
  * лучше хранить в слое, но для наглядности они отнесены к нейрону.
  */
-@Getter
-@Setter
 public class Neuron {
     public String neuronAddress;
     public double[] weights;
@@ -31,7 +25,7 @@ public class Neuron {
     public final DoubleUnaryOperator derivativeActivationFunction;
 
     /**
-     * большинство параметров инициализируются в конструкторе.
+     * Большинство параметров инициализируются в конструкторе.
      * @param weights ...
      * @param learningRate - выглядит предустановленным, но всё же
      *                     есть причина сделать его изменяемым.
@@ -41,7 +35,7 @@ public class Neuron {
      *                     Существуют нейронные сети которые изменяют скорость обучения по мере
      *                     приближения к решению и автоматически пробуют разные функции активации.
      *                     Поскольку у нас данная переменная final она не может быть изменена
-     *                     в середине потока, но чтобы сделать её не окончательной, просто менякм код.
+     *                     в середине потока, но чтобы сделать её не окончательной, просто меняем код.
      * @param activationFunction - выглядит предустановленным, но всё же
      *                           есть причина сделать его изменяемым.
      *                           Если класс будет использоваться для других типов нейронных сетей,
@@ -50,7 +44,7 @@ public class Neuron {
      *                           Существуют нейронные сети которые изменяют скорость обучения по мере
      *                           приближения к решению и автоматически пробуют разные функции активации.
      *                           Поскольку у нас данная переменная final она не может быть изменена
-     *                           в середине потока, но чтобы сделать её не окончательной, просто менякм код.
+     *                           в середине потока, но чтобы сделать её не окончательной, просто меняем код.
      * @param derivativeActivationFunction - выглядит предустановленным, но всё же
      *                           есть причина сделать его изменяемым.
      *                           Если класс будет использоваться для других типов нейронных сетей,
@@ -59,7 +53,7 @@ public class Neuron {
      *                           Существуют нейронные сети которые изменяют скорость обучения по мере
      *                           приближения к решению и автоматически пробуют разные функции активации.
      *                           Поскольку у нас данная переменная final она не может быть изменена
-     *                           в середине потока, но чтобы сделать её не окончательной, просто менякм код.
+     *                           в середине потока, но чтобы сделать её не окончательной, просто меняем код.
      */
     public Neuron(double[] weights
             , double learningRate
@@ -78,12 +72,56 @@ public class Neuron {
         this.derivativeActivationFunction = derivativeActivationFunction;
     }
 
+    public String getNeuronAddress() {
+        return neuronAddress;
+    }
+
+    public void setNeuronAddress(String neuronAddress) {
+        this.neuronAddress = neuronAddress;
+    }
+
+    public double[] getWeights() {
+        return weights;
+    }
+
+    public void setWeights(double[] weights) {
+        this.weights = weights;
+    }
+
+    public double getDelta() {
+        return delta;
+    }
+
+    public void setDelta(double delta) {
+        this.delta = delta;
+    }
+
+    public double getLearningRate() {
+        return learningRate;
+    }
+
+    public double getOutputCache() {
+        return outputCache;
+    }
+
+    public void setOutputCache(double outputCache) {
+        this.outputCache = outputCache;
+    }
+
+    public DoubleUnaryOperator getActivationFunction() {
+        return activationFunction;
+    }
+
+    public DoubleUnaryOperator getDerivativeActivationFunction() {
+        return derivativeActivationFunction;
+    }
+
     /**
      * Единственный метод класса Neuron
      * @param inputs - принимает входные сигналы (входные данные) и применяет к ним формулу (DotProduct)
      *               Входные сигналы объединяются с весами посредством
      *               скалярного произведения и результат кэшируется в outputCache.
-     *               Это значение которое было получено до того как была задействована функция активации,
+     *               Это значение, которое было получено до того как была задействована функция активации,
      *               используется для вычисления дельты.
      * @return - Прежде чем сигнал будет отправлен на следующий слой, к нему применяется функция активации.
      */

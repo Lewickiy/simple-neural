@@ -22,7 +22,10 @@ public class Wine {
         List<String[]> wineDataset = loadCSV("wine/");
         Collections.shuffle(wineDataset);
         for (String[] wineData : wineDataset) {
-            double[] parameters = Arrays.stream(wineData).skip(1).mapToDouble(Double::parseDouble).toArray();
+            double[] parameters = Arrays.stream(wineData)
+                    .skip(1)
+                    .mapToDouble(Double::parseDouble)
+                    .toArray();
             wineParameters.add(parameters);
             int species = Integer.parseInt(wineData[0]);
             switch (species) {
@@ -52,7 +55,6 @@ public class Wine {
     }
 
     public Network<Integer>.Results classify() {
-
         Network<Integer> wineNetwork = new Network<>(
                 new int[] {13, 7, 3},
                 0.79,
