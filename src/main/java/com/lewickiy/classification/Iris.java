@@ -2,6 +2,7 @@ package com.lewickiy.classification;
 
 import com.lewickiy.neuronnetwork.Network;
 import com.lewickiy.util.Activation;
+import com.lewickiy.util.MaxDoubleList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.lewickiy.util.LoadCSV.loadCSV;
-import static com.lewickiy.util.LoadCSV.max;
 import static com.lewickiy.util.Normalize.normalizeByFeatureScaling;
 
 public class Iris {
@@ -27,7 +27,10 @@ public class Iris {
         Collections.shuffle(irisDataset);
 
         for (String[] iris : irisDataset) {
-            double[] parameters = Arrays.stream(iris).limit(4).mapToDouble(Double::parseDouble).toArray();
+            double[] parameters = Arrays
+                    .stream(iris)
+                    .limit(4)
+                    .mapToDouble(Double::parseDouble).toArray();
             irisParameters.add(parameters);
 
             String species = iris[4];
@@ -42,7 +45,7 @@ public class Iris {
     }
 
     public String irisInterpretOutput(double[] output) {
-        double max = max(output);
+        double max = MaxDoubleList.max(output);
         if(max == output[0]) {
             return IRIS_SETOSA;
         } else if (max == output[1]) {
