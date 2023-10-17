@@ -2,6 +2,7 @@ package com.lewickiy.classification;
 
 import com.lewickiy.neuronnetwork.Network;
 import com.lewickiy.util.Activation;
+import com.lewickiy.util.MaxDoubleList;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static com.lewickiy.util.LoadCSV.loadCSV;
-import static com.lewickiy.util.LoadCSV.max;
 import static com.lewickiy.util.Normalize.normalizeByFeatureScaling;
 
 public class Wine {
@@ -44,7 +44,7 @@ public class Wine {
     }
 
     public Integer wineInterpretOutput(double[] output) {
-        double max = max(output);
+        double max = MaxDoubleList.max(output);
         if(max == output[0]) {
             return 1;
         } else if (max == output[1]) {

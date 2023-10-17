@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LoadCSV {
@@ -20,7 +19,5 @@ public class LoadCSV {
         return strings;
     }
 
-    public static double max(double[] numbers) {
-        return Arrays.stream(numbers).max().orElse(Double.MAX_VALUE);
-    }
+
 }
